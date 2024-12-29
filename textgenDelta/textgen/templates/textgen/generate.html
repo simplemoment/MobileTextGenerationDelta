@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Generation</title>
+    <script>
+        async function generateText() {
+            const prompt = document.getElementById('prompt').value;
+            const role = document.getElementById('role').value;
+            const temperature = document.getElementById('temperature').value;
+            const max_tokens = document.getElementById('max_tokens').value;
+            const top_p = document.getElementById('top_p').value;
+            const top_k = document.getElementById('top_k').value;
+
+            const response = await fetch('', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'prompt': prompt,
+                    'role': role,
+                    'temperature': temperature,
+                    'max_tokens': max_tokens,
+                    'top_p': top_p,
+                    'top_k': top_k
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+
+            const data = await response.json();
+            document.getElementById('generated_text').innerText = data.generated_text;
+        }
+    </script>
+</head>
+<body>
+    <h1>Text Generation</h1>
+    <textarea id="prompt" rows="5" cols="50"></textarea><br>
+
+    <label for="role">Role:</label>
+    <select id="role">
+        <option value="user">User</option>
+        <option value="assistant">Assistant</option>
+        <option value="system">System</option>
+    </select><br>
+
+    <label for="temperature">Temperature:</label>
+    <input type="number" step="0.1" id="temperature" value="0.7"><br>
+
+    <label for="max_tokens">Max Tokens:</label>
+    <input type="number" id="max_tokens" value="100"><br>
+
+    <label for="top_p">Top P:</label>
+    <input type="number" step="0.1" id="top_p" value="1.0"><br>
+
+    <label for="top_k">Top K:</label>
+    <input type="number" id="top_k" value="50"><br>
+
+    <button onclick="generateText()">Generate</button>
+
+    <h2>Generated Text:</h2>
+    <p id="generated_text"></p>
+</body>
+</html>
